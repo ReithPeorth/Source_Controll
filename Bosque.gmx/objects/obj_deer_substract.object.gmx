@@ -27,7 +27,7 @@
             <kind>1</kind>
             <string>///Crea light_front
 
-instance_create(x, y, obj_deer_light);
+scr_light(obj_deer_light);
 </string>
           </argument>
         </arguments>

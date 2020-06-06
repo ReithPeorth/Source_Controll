@@ -196,9 +196,9 @@ else
 //Sword &amp; Grab  --------------------------------------------------------------------
 
 //Para q funcione esta mecanica, "action_icon" debe estar siempre en "true",
-//y asi poder activar un while statement que lo hace false
+//y asi poder activar un if statement que lo hace false
 action_icon = true;
-//ademas se establece un temporizador para q todas las demas mecanicas dejen de funcionar durante la animacion de "iteractuar
+//ademas se establece un temporizador para q todas las demas mecanicas dejen de funcionar durante la animacion de "iteractuar"
 if (action_timer &gt; 0)
 {
     action_timer -= 1;
@@ -279,7 +279,7 @@ if (hand== false) &amp;&amp; (sword == false) &amp;&amp; (nearest_item_icon == o
 }
 
 //Items en las manos    ----------------------------------------------------------------
-//while statement que establece que, siempre que player porte un item en las manos: 
+//statement que establece que, siempre que player porte un item en las manos: 
 //este item no tendra gravedad, estara fisicamente "en las manos" del sprite de player y no podra recoger otros items
 
 if (hand == true)
@@ -289,68 +289,6 @@ if (hand == true)
     hand_item.y = obj_hand.y;    //la posicion y del item esta en las manos
     action_icon = false;            //player no puede recoger otro item hasta soltar este
 }
-/*
-//Sword
-if (sword == true)
-{
-    if (press_leave_sword == true)
-    {
-        image_index = 1;
-        instance_create((x+(player_front*(global.unit/2))), y, obj_sword);  //deja sword delante de player
-        //el aura de luz del jugador cambia
-        sword = false;
-        grab = true;
-    }
-}
-
-//Grab
-
-//INVESTIGAR.  El icono no aparece hasta que se ha soltado la espada por primera vez.
-//             y tras coger objeto con espada en mano, el icono deja de aparecer
-//Es posible que no exista boton para dejar objeto en el suelo?
-
-if (nearest_item_icon != 0) &amp;&amp; (grab == true) &amp;&amp; (press_action = true)    //pressiona Action
-{
-    if (nearest_item_icon == nearest_item)    //se muestra el icono sobre un obj
-    {     
-        if (sword == true)  //al coger algo con la espada en la mano, se suelta la espada detras de Player
-        {
-            image_index = 1;
-            //TO DO: el aura de luz del jugador cambia
-            instance_create((x+((global.unit/2)*(player_front*(-1)))), y, obj_sword);   //deja sword detras de player
-            hand_holding = true;
-            sword = false; 
-            /*           
-            //añadir un "if statement" mas tarde para hand holding
-            nearest_item.x = obj_hand.x;
-            nearest_item.y = obj_hand.y;
-            nearest_item.vsp = 0;
-            *(/
-            grab = false;
-        }
-        if (sword == false)
-        {
-            grab = false;
-            hand_holding = true
-        }        
-    }
-    if (nearest_item_icon == obj_sword)
-    {
-        sword = true;
-        hand_holding = false;
-        image_index = 0;
-        instance_destroy(obj_sword);
-    }
-}
-
-if (grab == false) &amp;&amp; (press_action = true) &amp;&amp; (hand_holding == true) &amp;&amp; (sword == 0)   //pressiona Action
-{
-    //hand_holding = false;
-    hand_holding = true;
-    grab = true;
-}
-
-
 
 </string>
           </argument>
