@@ -29,6 +29,8 @@
 image_speed = 0;
 hsp = 0;
 vsp = 0;
+
+grav = true;    //variable q sirve para q obj externos activen y desactiven la gravedad de este obj
 </string>
           </argument>
         </arguments>
@@ -51,7 +53,13 @@ vsp = 0;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>scr_grav();
+            <string>//incluyo gravedad y colision por si acaso, pero no se si la necesitare en el futuro
+
+if grav == true     
+{
+    scr_grav();
+}
+
 scr_collision();
 x += hsp;
 y += vsp;

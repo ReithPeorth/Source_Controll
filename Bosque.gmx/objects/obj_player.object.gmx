@@ -41,11 +41,12 @@ player_front = 1;               //guarda hacia donde esta encarado player
 
 // en un futuro la posicion de obj_sword_light en la mano de pj deberia de ir moviendose con la animacion del pj
 sword = true;                   //indica si el pj tiene la espada o no (true false)
-grab = true;                   //Guarda si player puede "coger" cosas
-action_range = global.unit/2;     //la distanciua a la q el personaje puede interactuar con objetos
+action_icon = true;             //Guarda si aparece el icono de "accion"
+action_range = global.unit/2;   //la distanciua a la q el personaje puede interactuar con objetos
 nearest_item_icon = 0;          //guarda en todo momento que obj debe mostrar un icono de interaccion
-hand = 0;                       //guarda lo q lleva player en la mano en terminos de 1, 2, 3...(scepto sword)
-hand_holding = false            //estado que le comunica a "nearest item" q no se ve afectado por la gravedad
+hand = 0;                       //guarda si player lleva un item en la mano q no sea sword
+action_timer = 0;               //temporizador. Sirve para q mientras player este haciendo la animacion de "interactuar", el resto de mecanicas no funcionen
+hand_item = 0;                  //guarda el item que esta en las manos
 
 hsp = 0;     //Horizontal speed  global. 
 vsp = 0;     //vertical speed  global
@@ -53,7 +54,7 @@ movespeed = global.unit_per_sec * 2;   //numero de units q se mueve por segundo
 // 0.5333333333333333 * global.unit;      //"units" per step (en este caso 16/30)
 //cambiar velocidad para q sea un numero redondo
 
-//posicion -----------------------------------------------------------------------------
+//posicion inicial-----------------------------------------------------------------------------
 
 x = global.unit * 6 ;
 y = global.unit * 5.5;
@@ -121,7 +122,8 @@ press_leave_sword = keyboard_check_pressed(key_leave_sword);
 move = press_left + press_right;
 player_dir = sign(move);    //direccion de movimiento de player. Cuando esta parado, es 0 (se usa en el paralax)
 hsp = move * movespeed ;
-scr_grav();
+
+scr_grav();     //script activa gravedad sobre player
 
 
 
@@ -141,7 +143,7 @@ if (player_dir == 1)    //derecha
 //colisiones    -------------------------------------------------------------------
 
 
-scr_collision();
+scr_collision();    //script activa colisiones
 
 x += hsp;
 y += vsp;
@@ -171,22 +173,19 @@ else
     }
 }
 
-//Sword &amp; Grab  --------------------------------------------------------------------
-
-
 
 //Showing "action icon"
 
 //action_range es un rango alrededor de Player dentro del cual es posible la interaccion con obj como Water, Plant o Sword
 //utilizo "nearest_item_icon diferente de 0" para determinar cuando player puede recoger obj
-if ((abs(nearest_item.x - x)) &lt;= action_range) &amp;&amp; (grab == true)
+if ((abs(nearest_item.x - x)) &lt;= action_range) &amp;&amp; (action_icon == true)
 {
     nearest_item_icon = nearest_item;
     instance_create(nearest_item.x, ((nearest_item.y)-(global.unit/2)), obj_action_icon);
 }
 else
 {
-    if (instance_exists(obj_sword)) &amp;&amp; ((abs(obj_sword.x - x)) &lt;= action_range) &amp;&amp; (grab == true)
+    if (instance_exists(obj_sword)) &amp;&amp; ((abs(obj_sword.x - x)) &lt;= action_range) &amp;&amp; (action_icon == true)
     {
         nearest_item_icon = obj_sword;
         instance_create(obj_sword.x, ((obj_sword.y)-(global.unit/2)), obj_action_icon);
@@ -194,6 +193,103 @@ else
     else nearest_item_icon = 0;
 }
 
+//Sword &amp; Grab  --------------------------------------------------------------------
+
+//Para q funcione esta mecanica, "action_icon" debe estar siempre en "true",
+//y asi poder activar un while statement que lo hace false
+action_icon = true;
+//ademas se establece un temporizador para q todas las demas mecanicas dejen de funcionar durante la animacion de "iteractuar
+if (action_timer &gt; 0)
+{
+    action_timer -= 1;
+}
+
+//ahora se tratan las posibles situaciones diferentes de interaccion entre player y el enviroment
+//***añadir "player interactua con "narrative triggers", tales como el arbol
+
+
+//Situacion 1
+//player se acerca a un item y pulsa "action". Variante con y sin espada
+
+// 
+//(si el icono se puede mostrar) &amp;&amp; (el item mas cercano NO es sword) &amp;&amp; (y la animacion ha acabado)
+if (action_icon == true) &amp;&amp; (nearest_item_icon == nearest_item) &amp;&amp; (action_timer == 0)
+{
+    if (press_action = true)    //al pulsar "action"
+    {
+        hand = true;                //lleva item en la mano
+        hand_item = nearest_item    //nearest item "pasa a la mano"
+        action_timer = 2;           //sustituir "2" por longitud de animacion
+        if (sword == true)          //si player tiene la espada
+        {
+            image_index = 1;
+            //TO DO: el aura de luz del jugador cambia
+            instance_create((x+((global.unit/2)*(player_front*(-1)))), y, obj_sword);   //deja sword detras de player
+            sword = false; 
+        }
+    }
+}
+
+
+//Situacion 2
+//Player lleva un item en las manos y lo deja en el suelo
+
+// (si player lleva un item en las manos) &amp;&amp; (si player no lleva la espada) &amp;&amp;(y la animacion ha acabado)
+if (hand == true) &amp;&amp; (sword == false) &amp;&amp; (action_timer == 0)
+{
+    if (press_action == true)   //al presionar "action"
+    {
+        hand = false;              //rompe el "while" de llevar item en las manos
+        hand_item.grav = true   //le devuelve la gravedad al objeto portado en las manos
+        //implementar q si "hand_item es agua, al dejarlo desaparece. SOlo implementar cuando "water" provenga de un medio infinito
+        action_timer = 2;   //sustituir "2" por longitud de animacion
+    }
+}
+
+
+//Situacion 3
+//Player deja la espada
+if (sword == true) &amp;&amp; (action_timer == 0)
+{
+    if (press_leave_sword == true)
+    {
+        image_index = 1;
+        instance_create((x+(player_front*(global.unit/2))), y, obj_sword);  //deja sword delante de player
+        //el aura de luz del jugador cambia
+        sword = false;
+        action_timer = 2;      //sustituir "2" por longitud de animacion
+    }
+}
+
+
+//Situacion 4
+//player recoge la espada
+
+//si (no lleva items en las manos) &amp;&amp; (si no lleva la espada) &amp;&amp; (el icono de accion se muestra en la espada) &amp;&amp; (y la animacion ha acabado)
+if (hand== false) &amp;&amp; (sword == false) &amp;&amp; (nearest_item_icon == obj_sword) &amp;&amp; (action_timer == 0)
+{
+    if (press_action == true)
+    {
+        sword = true;
+        image_index = 0;
+        instance_destroy(obj_sword);
+        //cambia aura player
+        action_timer = 2;       //sustituir "2" por longitud de animacion
+    }
+}
+
+//Items en las manos    ----------------------------------------------------------------
+//while statement que establece que, siempre que player porte un item en las manos: 
+//este item no tendra gravedad, estara fisicamente "en las manos" del sprite de player y no podra recoger otros items
+
+if (hand == true)
+{
+    hand_item.grav = false;      //la gravedad del item en las manos esta off
+    hand_item.x = obj_hand.x;    //la posicion x del item esta en las manos
+    hand_item.y = obj_hand.y;    //la posicion y del item esta en las manos
+    action_icon = false;            //player no puede recoger otro item hasta soltar este
+}
+/*
 //Sword
 if (sword == true)
 {
@@ -229,7 +325,7 @@ if (nearest_item_icon != 0) &amp;&amp; (grab == true) &amp;&amp; (press_action =
             nearest_item.x = obj_hand.x;
             nearest_item.y = obj_hand.y;
             nearest_item.vsp = 0;
-            */
+            *(/
             grab = false;
         }
         if (sword == false)

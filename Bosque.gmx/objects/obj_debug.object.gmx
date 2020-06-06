@@ -62,9 +62,9 @@ y = view_yview;
 //draw_text(x, y, string());
 
 draw_set_colour(c_white);
-draw_text(x, y, "grab- " + string(obj_player.grab));
+draw_text(x, y, "action icon- " + string(obj_player.action_icon));
 draw_text(x, y+10, "sword- " + string(obj_player.sword));
-draw_text(x, y+20, "hand holding- " + string(obj_player.hand_holding));
+draw_text(x, y+20, "hand- " + string(obj_player.hand));
 draw_text(x, y+30, "nearest item- " + string(obj_player.nearest_item));
 draw_text(x, y+40, "nearest icon- " + string(obj_player.nearest_item_icon));
 draw_text(x, y+50, "action- " + string(obj_player.press_action));
