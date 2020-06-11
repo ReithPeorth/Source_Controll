@@ -69,6 +69,10 @@ instance_create((x+(player_front*(global.player_width))), y, obj_hand);
 //esto se cambiara por un script de iluminacion
 instance_create(0, 0, obj_player_light_substract);
 
+//test de "tempo"
+pressed_t = 0;
+tempo_check = 0;
+
 
 
 
@@ -103,6 +107,7 @@ instance_create(0, 0, obj_player_light_substract);
 
 key_left = vk_left;     //move left
 key_right = vk_right;   //move right
+key_up = vk_up;
 key_sprint = 0;         //keep pressed to sprint
 key_action = vk_space;  //interact or grab button
 key_sword = 0;          //use the sword
@@ -115,6 +120,7 @@ press_right = keyboard_check(key_right);
 press_left = - keyboard_check(key_left);
 press_action = keyboard_check_pressed(key_action);
 press_leave_sword = keyboard_check_pressed(key_leave_sword);
+press_up = keyboard_check_pressed(key_up);
 
 
 //react to imput--------------------------------------------------------------------------
@@ -290,6 +296,22 @@ if (hand == true)
     action_icon = false;            //player no puede recoger otro item hasta soltar este
 }
 
+
+//  ---------------------------------------------------------------------
+//test de "tempo"
+//implementar con un script
+if (press_up = true)
+{
+    pressed_t = 1;
+    tempo_check = obj_tempo.compas;
+}
+
+if (pressed_t == 1) &amp;&amp; ((obj_tempo.compas -1) == tempo_check)
+{
+    audio_play_sound(snd_test, 0, 0);
+    pressed_t = 0;
+    tempo_check = 0;
+}
 </string>
           </argument>
         </arguments>

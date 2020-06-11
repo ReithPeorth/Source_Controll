@@ -66,9 +66,9 @@ draw_text(x, y, "tempo- " + string(obj_tempo.compas));
 draw_text(x, y+10, "blanca- " + string(obj_tempo.blanca));
 draw_text(x, y+20, "negra- " + string(obj_tempo.negra));
 draw_text(x, y+30, "corchea- " + string(obj_tempo.corchea));
-/*
-draw_text(x, y+40, "nearest icon- " + string(obj_player.nearest_item_icon));
-draw_text(x, y+50, "action- " + string(obj_player.press_action));
+
+draw_text(x, y+40, "t- " + string(obj_player.pressed_t));
+draw_text(x, y+50, "check- " + string(obj_player.tempo_check));
 
 
 
