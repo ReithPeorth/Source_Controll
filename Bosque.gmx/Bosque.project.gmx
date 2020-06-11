@@ -4,7 +4,10 @@
     <Config>Configs\Default</Config>
   </Configs>
   <NewExtensions/>
-  <sounds name="sound"/>
+  <sounds name="sound">
+    <sound>sound\snd_tempo</sound>
+    <sound>sound\snd_test</sound>
+  </sounds>
   <sprites name="sprites">
     <sprite>sprites\sp_ground</sprite>
     <sprite>sprites\sp_viewcentre</sprite>
@@ -57,26 +60,16 @@
   </scripts>
   <objects name="objects">
     <object>objects\obj_debug</object>
-    <object>objects\obj_ground</object>
     <object>objects\obj_parametros</object>
-    <object>objects\obj_viewcentre</object>
-    <object>objects\obj_camera</object>
+    <object>objects\obj_tempo</object>
+    <object>objects\obj_ground</object>
+    <objects name="Camera">
+      <object>objects\obj_camera</object>
+      <object>objects\obj_viewcentre</object>
+    </objects>
     <objects name="Surface">
       <object>objects\obj_sf_darkness_manager</object>
       <object>objects\obj_sf_background_manager</object>
-    </objects>
-    <objects name="Player">
-      <object>objects\obj_player</object>
-      <object>objects\obj_player_light_substract</object>
-      <object>objects\obj_player_light_front</object>
-      <object>objects\obj_sword</object>
-      <object>objects\obj_hand</object>
-      <object>objects\obj_action_icon</object>
-    </objects>
-    <objects name="deer">
-      <object>objects\obj_deer</object>
-      <object>objects\obj_deer_substract</object>
-      <object>objects\obj_deer_light</object>
     </objects>
     <objects name="Backgrounds">
       <object>objects\obj_bg_black</object>
@@ -87,6 +80,19 @@
       <object>objects\obj_bg_4</object>
       <object>objects\obj_bg_manager</object>
       <object>objects\obj_bg_foreground</object>
+    </objects>
+    <objects name="Player">
+      <object>objects\obj_player</object>
+      <object>objects\obj_player_light_substract</object>
+      <object>objects\obj_player_light_front</object>
+      <object>objects\obj_sword</object>
+      <object>objects\obj_hand</object>
+      <object>objects\obj_action_icon</object>
+    </objects>
+    <objects name="Deer">
+      <object>objects\obj_deer</object>
+      <object>objects\obj_deer_substract</object>
+      <object>objects\obj_deer_light</object>
     </objects>
     <objects name="Nature">
       <object>objects\obj_water</object>

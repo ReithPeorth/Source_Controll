@@ -27,24 +27,35 @@
             <kind>1</kind>
             <string>///Variables Globales y Creacion de Surfaces y Bacgrounds
 
-//variables globales
+//variables globales    -----------------------------------------------------------
 
-//debug obj
-//INVESTIGAR. Por alguna razon, este obj da "fatal error"
-//instance_create(x, y, obj_debug);
+//STEP
+global.step_speed = room_speed;   //el valor de "speed" de la room. Son el numero de steps por segundo. En este caso, 30
 
+
+//UNIT
 //unit se referira siempre al tamaño en altura del sprite de player, que utilizaremos como medida universal
 global.unit = view_wview /16; //en este caso es 32.  view_width (480) entre 16 = 30
 
-
-global.step_speed = 30;   //el valor de "step" del juego
 global.unit_per_sec = global.unit / global.step_speed;  //distancia de una unidad en un segundo
 
 global.grav = global.unit * 0.17 ;     //constante universal de gravedad en el juego
 //Si "unit" son 2 metros, la gravedad serian 5.42 pixeles por step. Q a su vez son 0.17 units
 
 
-//Create Backgrounds
+//TEMPO
+//Guarda el numero de steps que dura cada "compas" del ritmo q hay permanentemente detras del juego
+global.tempo = global.step_speed * 4;   //en este caso, tempo son 4 segundos
+//divisiones de "tempo" como si fuera un compas
+//IMPORTANTE las variables globales guardan la longitud de la "nota", mientras q las variables locales guardan el cambio q se produce al final de cada nota.
+//ej.  "global.blanca" y "blanca" 
+global.blanca = global.tempo / 2;
+global.negra = global.tempo / 4;
+global.corchea = global.tempo / 8;
+
+
+
+//Create Backgrounds    --------------------------------------------------------------------
 instance_create(0, 0, obj_bg_black);        //depth 60
 //instance_create(0, 0, obj_bg_fog);          //depth 55
 instance_create(0, 0, obj_bg_1);            //depth 50
@@ -53,8 +64,6 @@ instance_create(0, 0, obj_bg_3);            //depth 30
 instance_create(0, 0, obj_bg_4);            //depth 20
 instance_create(0, 0, obj_bg_foreground);   //depth -90
 
-//Create Debug
-instance_create(0, 0, obj_debug);
 
 </string>
           </argument>
