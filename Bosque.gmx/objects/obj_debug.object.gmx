@@ -67,7 +67,7 @@ draw_text(x, y+10, "blanca- " + string(obj_tempo.blanca));
 draw_text(x, y+20, "negra- " + string(obj_tempo.negra));
 draw_text(x, y+30, "corchea- " + string(obj_tempo.corchea));
 
-draw_text(x, y+40, "t- " + string(obj_player.pressed_t));
+draw_text(x, y+40, "t- " + string(obj_player.tempo_action));
 draw_text(x, y+50, "check- " + string(obj_player.tempo_check));
 
 

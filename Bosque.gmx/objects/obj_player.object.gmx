@@ -69,9 +69,12 @@ instance_create((x+(player_front*(global.player_width))), y, obj_hand);
 //esto se cambiara por un script de iluminacion
 instance_create(0, 0, obj_player_light_substract);
 
-//test de "tempo"
-pressed_t = 0;
+//Tempo sincronization
+tempo_action = 0;
 tempo_check = 0;
+sinc_rythm = 4      //empieza en 4 por q no hay un "tempo 4"
+sinc_sound = 0
+sinc_action = 0
 
 
 
@@ -300,16 +303,15 @@ if (hand == true)
 //  ---------------------------------------------------------------------
 //test de "tempo"
 //implementar con un script
-if (press_up = true)
-{
-    pressed_t = 1;
-    tempo_check = obj_tempo.compas;
-}
+if (press_up = true) {scr_tempo_start(0);}
 
-if (pressed_t == 1) &amp;&amp; ((obj_tempo.compas -1) == tempo_check)
+scr_tempo_end(0, snd_test, 0);
+
+/*
+if (tempo_action == 1) &amp;&amp; ((obj_tempo.compas -1) == tempo_check)
 {
     audio_play_sound(snd_test, 0, 0);
-    pressed_t = 0;
+    tempo_action = 0;
     tempo_check = 0;
 }
 </string>

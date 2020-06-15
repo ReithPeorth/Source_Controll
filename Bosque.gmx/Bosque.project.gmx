@@ -56,7 +56,8 @@
     <script>scripts\scr_collision.gml</script>
     <script>scripts\scr_light.gml</script>
     <script>scripts\scr_clift_check.gml</script>
-    <script>scripts\scr_show_icon.gml</script>
+    <script>scripts\scr_tempo_end.gml</script>
+    <script>scripts\scr_tempo_start.gml</script>
   </scripts>
   <objects name="objects">
     <object>objects\obj_debug</object>
