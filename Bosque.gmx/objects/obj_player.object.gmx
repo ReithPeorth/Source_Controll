@@ -114,7 +114,7 @@ key_up = vk_up;
 key_sprint = 0;         //keep pressed to sprint
 key_action = vk_space;  //interact or grab button
 key_sword = 0;          //use the sword
-key_leave_sword = vk_backspace;     //this puts the sword on the ground
+key_release_item = vk_backspace;     //this puts the sword on the ground
 //"leave_sword" deberia ser reimplementdado para usar menos teclas, por ejemplo, manteniendo "action"
 
 //player input---------------------------------------------------------------------
@@ -122,7 +122,7 @@ key_leave_sword = vk_backspace;     //this puts the sword on the ground
 press_right = keyboard_check(key_right);
 press_left = - keyboard_check(key_left);
 press_action = keyboard_check_pressed(key_action);
-press_leave_sword = keyboard_check_pressed(key_leave_sword);
+press_release_item = keyboard_check_pressed(key_release_item);
 press_up = keyboard_check_pressed(key_up);
 
 
@@ -278,7 +278,7 @@ if (action_icon == true) &amp;&amp; (nearest_item_icon == nearest_item) &amp;&am
 // (si player lleva un item en las manos) &amp;&amp; (si player no lleva la espada) &amp;&amp;(y la animacion ha acabado)
 if (hand == true) &amp;&amp; (sword == false) &amp;&amp; (action_timer == 0)
 {
-    if (press_action == true)   //al presionar "action"
+    if (press_release_item == true)   //al presionar "action"
     {
         hand = false;              //rompe el "while" de llevar item en las manos
         if (hand_item == 1) //agua
@@ -300,7 +300,7 @@ if (hand == true) &amp;&amp; (sword == false) &amp;&amp; (action_timer == 0)
 //Player deja la espada
 if (sword == true) &amp;&amp; (action_timer == 0)
 {
-    if (press_leave_sword == true)
+    if (press_release_item == true)
     {
         image_index = 1;
         instance_create((x+(player_front*(global.unit/2))), y, obj_sword);  //deja sword delante de player
