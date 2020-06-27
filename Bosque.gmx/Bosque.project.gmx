@@ -41,6 +41,7 @@
       <sprite>sprites\spr_plant</sprite>
       <sprite>sprites\spr_water</sprite>
       <sprite>sprites\spr_water_drop</sprite>
+      <sprite>sprites\spr_flower</sprite>
     </sprites>
   </sprites>
   <backgrounds name="background">
@@ -102,6 +103,7 @@
       <object>objects\obj_water_drop</object>
       <object>objects\obj_plant</object>
       <object>objects\obj_plant_seed</object>
+      <object>objects\obj_flower</object>
     </objects>
   </objects>
   <rooms name="rooms">

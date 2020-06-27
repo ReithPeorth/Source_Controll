@@ -32,8 +32,43 @@ vsp = 0;
 
 grav = true;    //variable q sirve para q obj externos activen y desactiven la gravedad de este obj
 
-//crea luz
-//scr_light(obj_plant_light_substract);
+
+//Growth        -----------------------------------------------------------
+//array que contiene:
+// en la fila [0] el tamaño de la planta  
+// en la fila [1] el numero de columna de la arrawy
+// en la [2] la ID del sprite
+
+growth_distance = 8;        //la distancia entre los centros de cada sprite (y tamaño del sprite)
+growth_rythm = 0;           //el tiempo q tarda en crecer
+water = false;              //guarda si se detecta water
+water_drop = false;         //guarda si se detecta water_drop
+nearest_water = 0;          //guarda la ID del water mas cercano
+nearest_water_drop = 0;     //guarda la ID del water_drop mas cercano
+growth_alarm = 0;           //alarma para q solo crezca una vez por cada water_drop
+
+growth[0, 2] = 0;
+growth[0, 1] = 1;
+growth[0, 0] = 0;
+
+
+for(z = 2; z &gt; -1; z -=1)   //guarda el numero de columna, para relaccionarlo en fila [2]
+{
+    growth[1, z] = z;
+}
+
+
+for(i = 2; i &gt; -1; i -= 1)  //guarda la ID de cada sprite, relaccionando su x con el numero de columna
+{
+    growth[2, i] = instance_create(x + (growth_distance/2) + (growth_distance *  i), (y -2), obj_flower);
+}
+
+
+
+
+
+
+
 </string>
           </argument>
         </arguments>
@@ -58,6 +93,7 @@ grav = true;    //variable q sirve para q obj externos activen y desactiven la g
             <kind>1</kind>
             <string>//incluyo gravedad y colision por si acaso, pero no se si la necesitare en el futuro
 
+//Gravity and Collision -------------------------------------------------------------
 if grav == true     
 {
     scr_grav();
@@ -66,6 +102,102 @@ if grav == true
 scr_collision();
 x += hsp;
 y += vsp;
+
+//Growth        ----------------------------------------------------------------------
+//Al derramar agua sobre Plant, la array crece
+
+//loop q pasa por cada "casilla" de flor, comprueba si hay "water_drop" cerca, y devuelve "water_drop = true"
+water_drop = false;     //reinicia la variable cada step para q solo crezca una vez
+
+if instance_exists(obj_water_drop)
+{
+    for(i = (array_length_2d(growth, 1) -1); i &gt; -1; i -= 1)
+    {
+        nearest_water_drop = instance_nearest(growth[2, i].x, y, obj_water_drop);
+        if ((nearest_water_drop.x - growth[2, i].x) &lt;= (growth_distance/2)) &amp;&amp; ((nearest_water_drop.y - growth[2, i].y) &lt;= (growth_distance/2))
+        {
+            water_drop = true;
+            break    
+        }
+    }
+}
+
+if (growth_alarm &gt; 0) growth_alarm -=1;     //alarma para q solo crezca una vez por water drop
+
+if (instance_exists(obj_water_drop)) &amp;&amp; (water_drop == true) &amp;&amp; (growth_alarm &lt;= 0)      //regar planta
+{
+    //los valores de fila[0] suman +1 hasta un maximo de 3 
+    for(i = (array_length_2d(growth, 1) -1); i &gt; -1; i -= 1)
+    {
+        if growth[0, i] &lt; 3
+        {
+            growth[0, i] += 1;
+        }
+    }
+    //los valores de fila[1] suman +1 
+    for(i = (array_length_2d(growth, 1) -1); i &gt; -1; i -= 1)
+    {
+        growth[1, i] += 1;
+    }
+    //todos los valores se mueven una columna a la derecha (esto añade una casilla a la derecha)
+     for(i = (array_length_2d(growth, 1) -1); i &gt; -1; i -= 1)
+    {
+        for(z = 2; z &gt; -1; z -= 1)
+        {
+            growth[z, i+1] = growth[z, i];
+        }
+    }
+    //columna [0] 
+    growth[0, 0] = 0;
+    growth[1, 0] = 0;
+    growth[2, 0] = instance_create(x + (growth_distance/2), (y -2), obj_flower);
+    //columna [array_length] --&gt;  fila [0] = 0, fila[1] = array_length, fila[2] instance create...
+    growth[0, (array_length_2d(growth, 2))] = 0;
+    growth[1, (array_length_2d(growth, 2))] = array_length_2d(growth, 2);
+    growth[2, (array_length_2d(growth, 2))] = instance_create(x + (growth_distance/2) + (growth_distance * (array_length_2d(growth, 1))), (y -2), obj_flower);
+    //mover plant a la izquierda "growth_distance" pixeles
+    x = x - growth_distance;
+    //chequea q cada ID.x = x + (growth_distance/2) + (growth_distance * growth[1, i]) 
+    for(i = (array_length_2d(growth, 1))-1; i &gt; -1; i -= 1)
+    {
+        growth[2, i].x = x + (growth_distance/2) + (growth_distance * growth[1, i]);
+    }
+    //alarma para esperar a q "water_drop" se destruya (growth_alarm)
+    growth_alarm = global.step_speed;
+}
+
+/*
+if (hay agua cerca)     //si esta cerca de agua
+{
+    //calcular centro de Plant
+    //definir hacia q lado esta water para parar de crecer cuando toca el agua
+    //no crear sprites encima del agua, de tal manera q las plantas crecen de manera normal, pero no aparecen en el agua
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="8" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Draw Rectangle
+
+draw_rectangle_colour(x, y-1, (x + (growth_distance * array_length_2d(growth, 1))), y+3, c_green, c_green, c_green, c_green, false);
 </string>
           </argument>
         </arguments>
