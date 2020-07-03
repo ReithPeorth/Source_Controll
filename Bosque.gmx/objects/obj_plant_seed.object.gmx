@@ -32,6 +32,10 @@ vsp = 0;
 
 grav = true;    //variable q sirve para q obj externos activen y desactiven la gravedad de este obj
 
+nearest_water = 0;
+nearest_water_drop = 0;
+
+
 //crea luz
 //scr_light(obj_plant_light_substract);
 </string>
@@ -66,6 +70,24 @@ if grav == true
 scr_collision();
 x += hsp;
 y += vsp;
+
+//creation of "plant" with water and water_drop
+
+//water     ----------------------------------------------------
+nearest_water = instance_nearest(x, y, obj_water);
+
+if(instance_exists(obj_plant)) &amp;&amp; ((nearest_water.x -x) &lt;= obj_plant.water_range)
+{
+    instance_create(x, y-4, obj_plant); //"y-4" se ajusta a esta build, cambiar cuando se tenga sprite
+    instance_destroy();
+}
+
+
+//water_drop       --------------------------------------------------
+if (instance_exists(obj_water_drop))
+{
+    nearest_water_drop = instance_nearest(x, y, obj_water_drop);
+}
 </string>
           </argument>
         </arguments>

@@ -32,6 +32,8 @@ image_speed = 0;
 
 hsp = 0;
 vsp = 0;
+nearest_water = 0;          //guarda la ID del water mas cercano
+water_collision = false;    //guarda si hay colision con "nearest_water"
 </string>
           </argument>
         </arguments>
@@ -61,6 +63,18 @@ scr_grav();
 scr_collision();
 x += hsp;
 y += vsp;
+
+//colision with water           ----------------------------------------
+
+//nearest water
+nearest_water = instance_nearest(x, y, obj_water);
+//colision
+if (place_meeting(x, y, nearest_water))
+{
+    water_collision = true;
+}
+else water_collision = false;
+
 </string>
           </argument>
         </arguments>

@@ -255,7 +255,7 @@ if (action_icon == true) &amp;&amp; (nearest_item_icon == nearest_item) &amp;&am
         hand = true;                                        //lleva item en la mano
         if (nearest_item == nearest_water)  hand_item = 1;  //cuando el item mas cercano es agua, hand_item es "1"
         if (nearest_item == nearest_plant)  hand_item = 2;  //cuando el item mas cercano es planta, hand_item es "2", una semilla
-        if (nearest_item == nearest_plant_seed)             //cuando el item mas cercano es semilla: 
+        if (instance_exists(obj_plant_seed)) &amp;&amp; (nearest_item == nearest_plant_seed)             //cuando el item mas cercano es semilla: 
         {
             hand_item = 2;                          //hand_item es "2", una semilla
             instance_destroy(nearest_plant_seed);   //destruye la semilla mas cercana
