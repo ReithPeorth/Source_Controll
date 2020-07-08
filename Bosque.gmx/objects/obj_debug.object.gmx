@@ -62,16 +62,21 @@ y = view_yview;
 //draw_text(x, y, string());
 
 draw_set_colour(c_white);
+/*
+//tempo debug
 draw_text(x, y, "tempo- " + string(obj_tempo.compas));
 draw_text(x, y+10, "blanca- " + string(obj_tempo.blanca));
 draw_text(x, y+20, "negra- " + string(obj_tempo.negra));
 draw_text(x, y+30, "corchea- " + string(obj_tempo.corchea));
-
 draw_text(x, y+40, "t- " + string(obj_player.tempo_action));
 draw_text(x, y+50, "check- " + string(obj_player.tempo_check));
+*/
 
-draw_text(x, y+60, "water_drop " + string(obj_plant.water_drop));
-
+draw_text(x, y, "near plant " + string(obj_player.nearest_plant));
+draw_text(x, y+10, "water left " + string(global.plant.water_left));
+draw_text(x, y+20, "water right " + string(global.plant.water_right));
+draw_text(x, y+30, "nearest flower " + string(global.plant.nearest_flower_to_water));
+draw_text(x, y+40, "farthest flower " + string(global.plant.farthest_flower_to_water));
 
 
 

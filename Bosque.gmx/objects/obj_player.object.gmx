@@ -164,6 +164,7 @@ y += vsp;
 nearest_water = instance_nearest(x, y, obj_water);              //la fuente de agua mas cercana
 near_water_distance = abs(nearest_water.x - x)                  //distancia player-agua mas cercana
 nearest_plant = instance_nearest(x, y, obj_plant);              //planta mas cercana
+global.plant = nearest_plant;//borrar en final. SOlo para debug
 near_plant_distance = abs(nearest_plant.x - x)                  //distancia player-planta mas cercana
 if instance_exists(obj_plant_seed)
 {
