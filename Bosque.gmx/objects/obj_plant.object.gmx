@@ -26,6 +26,12 @@
           <argument>
             <kind>1</kind>
             <string>///Parametros
+
+
+//mover plant para que el centro caiga en el punto en el q esta la mano de player
+//CAMBIAR con el sprite definitivo
+x -= 8;
+
 image_speed = 0;
 hsp = 0;
 vsp = 0;
@@ -40,11 +46,11 @@ grav = true;    //variable q sirve para q obj externos activen y desactiven la g
 // en la [2] la ID del sprite
 
 //variables
-growth_distance = global.unit/2;//la distancia entre los centros de cada sprite (y tamaño del sprite)
+growth_distance = global.unit/4;//la distancia entre los centros de cada sprite (y tamaño del sprite)
 growth_rythm = 0;               //el tiempo q tarda en crecer
 water = false;                  //guarda si se detecta water
 water_drop = false;             //guarda si se detecta water_drop
-water_range = global.unit*4;    //distancia a la q una fuente de agua hace crecer plant
+water_range = global.unit*2;    //distancia a la q una fuente de agua hace crecer plant
 water_max_range = global.unit;  //distancia maxima a la q plant crece desde el agua
 nearest_water = 0;              //guarda la ID del water mas cercano
 water_left = false;             //true si "nearest_water" esta a la izquierda
@@ -54,7 +60,7 @@ farthest_flower_to_water = 0;   //guarda la ID de la "flower" mas lejana a water
 flower_right = 0;               //flower mas a la derecha
 flower_left = 0;                //flower mas a la izquierda
 flower_centre = 0;              //flower central
-plant_true_x = 0;
+true_x = 0;
 flower_even = 0;                //guarda si hay un numero par(true) o impar (false) de flores
 nearest_water_drop = 0;         //guarda la ID del water_drop mas cercano
 plant_centre = 0;               //guarda la ID de "flower" en la posicion central de la array
@@ -138,14 +144,7 @@ if (frac((array_length_2d(growth, 1))/2) == 0) {flower_even = true;}
 else flower_even = false;
 
 //averigua el verdadero centro de Plant
-if flower_even == true      //par
-{
-    plant_true_x = (flower_centre.x) + (growth_distance/2);
-}
-if flower_even == false     //impar
-{
-    plant_true_x = flower_centre.x;
-}
+true_x = flower_left.x + ((flower_right.x - flower_left.x) /2)
 
 //Water_drop check  --------------------------------------------------------------------
 //                  --------------------------------------------------------------------
@@ -175,16 +174,18 @@ water = false;     //reinicia la variable cada step para q solo crezca una vez
 
 if instance_exists(obj_water)
 {
+    nearest_water = instance_nearest(true_x, y, obj_water);   //nearest_water es el obj_water mas cercano al centro de PLant
+        if (abs(nearest_water.x - true_x)) &lt;= water_range              //si nearest_water esta dentro de water_range, entonces "water= true"
+        {
+            water = true
+        }
+    /*
     //  (       ( agua +cerca de flower_right )             - (flower_right)  ) &lt;= water_range)  o (        lo mismo pero water_left                                                    )
     if (((instance_nearest(flower_right.x, y, obj_water).x) - (flower_right.x)) &lt;= water_range) || (((instance_nearest(flower_left.x, y, obj_water).x) - (flower_left.x)) &lt;= water_range)
     {
-        water = true;
+
     }
-    
-    if water == true    //ID del Water mas cercano a la flor central (aprox) de Plant.
-    {
-        nearest_water = instance_nearest(plant_true_x, y, obj_water);
-    }
+    */
 }
 
 //Growth water_drop     --------------------------------------------------------------------
@@ -233,26 +234,27 @@ if (instance_exists(obj_water_drop)) &amp;&amp; (water_drop == true) &amp;&amp; 
 }
 
 //Growth  water ----------------------------------------------------------------
-//** falla algo del crecimiento y los distintos rangos. HAy que hacer chequeos. Parece tener q ver con que el icono de interaccion aparece en la parte izquierda de Plant
-//** cambiar la x de Plant para q sea el centro del sprite. Espero q no haya q cambiar el sistema
-//**el problema esta en q Plant esta a la izquierda cuando esta a la derecha
+//** falta 
+//** checquear si los valores de las diferentes plantas crecen o no.
+//** implementar difewrentes tamaños de planta
+//** implementar que plant crezca hacia el lado contrario a water, una vez se ha extendido hasta water
 
 if (instance_exists(obj_water)) &amp;&amp; (water == true) &amp;&amp; (growth_alarm &lt;= 0)    //si esta cerca de agua
 {
     //definir hacia que lado esta water
-    if ((nearest_water.x - growth[2, 0].x)&gt;(nearest_water.x - growth[2, (array_length_2d(growth, 2)-1)].x))
+    if ((abs(nearest_water.x - flower_left.x)) &lt; (abs(nearest_water.x - flower_right.x)))
     {
         water_left = true;
         water_right = false;
-        nearest_flower_to_water = growth[2, 0];
-        farthest_flower_to_water = growth[2, (array_length_2d(growth, 2)-1)];;
+        nearest_flower_to_water = flower_left;
+        farthest_flower_to_water = flower_right;
     }
-    if ((nearest_water.x - growth[2, 0].x)&lt;=(nearest_water.x - growth[2, (array_length_2d(growth, 2)-1)].x))
+    if ((abs(nearest_water.x - flower_left.x)) &gt;= (abs(nearest_water.x - flower_right.x)))
     {
         water_left = false;
         water_right = true;
-        nearest_flower_to_water = growth[2, (array_length_2d(growth, 2)-1)];
-        farthest_flower_to_water = growth[2, 0];;
+        nearest_flower_to_water = flower_right;
+        farthest_flower_to_water = flower_left;
     }
     
     if (nearest_flower_to_water.water_collision == false)  //plant no colisiona con water

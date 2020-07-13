@@ -77,7 +77,11 @@ draw_text(x, y+10, "water left " + string(global.plant.water_left));
 draw_text(x, y+20, "water right " + string(global.plant.water_right));
 draw_text(x, y+30, "nearest flower " + string(global.plant.nearest_flower_to_water));
 draw_text(x, y+40, "farthest flower " + string(global.plant.farthest_flower_to_water));
-
+draw_text(x, y+50, "flower_left " + string(global.plant.flower_left));
+draw_text(x, y+60, "flower_right " + string(global.plant.flower_right));
+draw_text(x, y+70, "water? " + string(global.plant.water));
+draw_text(x, y+80, "plant true x " + string(global.plant.true_x));
+draw_text(x, y+90, "water x " + string(global.plant.nearest_water.x));
 
 
 </string>

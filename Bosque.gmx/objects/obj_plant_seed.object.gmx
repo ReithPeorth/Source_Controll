@@ -35,6 +35,10 @@ grav = true;    //variable q sirve para q obj externos activen y desactiven la g
 nearest_water = 0;
 nearest_water_drop = 0;
 
+true_x = 0;
+
+true_x = x;
+
 
 //crea luz
 //scr_light(obj_plant_light_substract);

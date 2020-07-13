@@ -214,10 +214,10 @@ if (near_water_distance &lt; near_plant_distance)
 
 //action_range es un rango alrededor de Player dentro del cual es posible la interaccion con obj como Water, Plant o Sword
 //utilizo "nearest_item_icon diferente de 0" para determinar cuando player puede recoger obj
-if ((abs(nearest_item.x - x)) &lt;= action_range) &amp;&amp; (action_icon == true)
+if ((abs(nearest_item.true_x - x)) &lt;= action_range) &amp;&amp; (action_icon == true)
 {
     nearest_item_icon = nearest_item;
-    instance_create(nearest_item.x, ((nearest_item.y)-(global.unit/2)), obj_action_icon);
+    instance_create(nearest_item.true_x, ((nearest_item.y)-(global.unit/2)), obj_action_icon);
 }
 else
 {
